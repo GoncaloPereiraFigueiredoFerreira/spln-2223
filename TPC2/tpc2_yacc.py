@@ -1,25 +1,7 @@
 import ply.yacc as yacc
-
-
-
-"""
-PT: Ola
-ES: Hola
-EN: Hi
-CT: Hola
-LA: Oi
-AREA: COISAS
-GENERO: F
-
-PT: Adeus
-ES: Adios
-EN: Bye
-CT: Adios
-LA: Xau
-AREA: COISAS
-GENERO: M
-
-"""
+import sys
+import ply.lex as lex
+from tpc2_lex import tokens
 
 
 def p_1(p):
@@ -27,7 +9,7 @@ def p_1(p):
     pass
 
 def p_2(p):
-    "Es: E LINHA_B Es"
+    "Es: E LINHAB Es"
 
 def p_3(p):
     "Es: E"
@@ -57,7 +39,7 @@ def p_9(p):
 
 
 def p_10(p):
-    "LING: ID_LING ':' '\n' TS"
+    "LING: IDLING ':' '\n' TS"
 
 
 def p_11(p):
@@ -80,3 +62,24 @@ def p_15(p):
 
 def p_16(p):
     "AT_T: '\n' '+' ID ':' VAL"
+
+
+# Syntatic Error handling rule
+def p_error(p):
+    print('Syntax error: ', p)
+    parser.success = False
+
+
+# Build the parser
+parser = yacc.yacc()
+
+# Start parsing the input text
+for line in sys.stdin:
+    parser.success = True
+    parser.flag = True        # set to True when (+)
+    parser.last = 0
+    parser.nInter = 0
+    parser.intervalos = []
+
+    parser.parse(line)
+

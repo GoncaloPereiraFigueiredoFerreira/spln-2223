@@ -76,10 +76,5 @@ parser = yacc.yacc()
 # Start parsing the input text
 for line in sys.stdin:
     parser.success = True
-    parser.flag = True        # set to True when (+)
-    parser.last = 0
-    parser.nInter = 0
-    parser.intervalos = []
-
     parser.parse(line)
 
